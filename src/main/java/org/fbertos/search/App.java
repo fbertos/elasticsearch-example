@@ -27,11 +27,10 @@ public class App
     		
     		TransportClient client = new PreBuiltTransportClient(settings)
     	        .addTransportAddress(new TransportAddress(InetAddress.getByName("localhost"), 9300));
-    		
     		/*
     		User user = new User();
-    		user.setId(3L);
-    		user.setUsername("viewer");
+    		user.setId(4L);
+    		user.setUsername("viewer admin fbertos mmartinez");
     		user.setEnabled(true);
     		    		
     		ObjectMapper mapper = new ObjectMapper();
@@ -48,11 +47,10 @@ public class App
     		System.out.println(response.getSourceAsString());
     		*/
     		
-    		
     		BoolQueryBuilder query = QueryBuilders.boolQuery()
     				.must(QueryBuilders.boolQuery()
     						.should(QueryBuilders.termQuery("username", "fbertos"))
-    						.should(QueryBuilders.termQuery("username", "admin")))
+    						.should(QueryBuilders.wildcardQuery("username", "adm*")))
     				.must(QueryBuilders.termQuery("enabled", "true"));
     		
     		SearchResponse response = client.prepareSearch("twitter")
@@ -67,7 +65,7 @@ public class App
     			System.out.println(response.getHits().getAt(i).getScore());
     			System.out.println(response.getHits().getAt(i).getSourceAsString());
     		}
-    		    		
+    		  
     		client.close();
     		
     		System.out.println("OK!!");
